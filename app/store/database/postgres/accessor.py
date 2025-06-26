@@ -9,7 +9,7 @@ from sqlalchemy import delete, func, insert, select, text, update
 from sqlalchemy.engine import Result
 from sqlalchemy.exc import DBAPIError, IntegrityError, NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import MappedColumn
+from sqlalchemy.orm import MappedColumn, InstrumentedAttribute
 from sqlalchemy.sql.elements import TextClause
 
 from .exceptions import (
@@ -65,9 +65,9 @@ class PostgresAccessor:
 
     @staticmethod
     def get_query_select_by_fields(
-        select_field: Union[MappedColumn, Literal["*"]], *select_fields: MappedColumn
+        *select_field: Union[MappedColumn, Literal["*"], InstrumentedAttribute]
     ) -> Query:
-        return select(select_field, *select_fields)
+        return select(*select_field)
 
     @staticmethod
     def get_query_update(model: Model, **update_data) -> Query:

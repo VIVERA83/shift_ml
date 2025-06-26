@@ -27,3 +27,15 @@ class SalaryAccessor(BaseAccessor):
         if salary := result.mappings().one_or_none():
             return self.Meta.model(**salary)
         return None
+
+    async def get_next_date_change(self, user_id: int):
+        query = (
+            self.accessor.get_query_select_by_fields(self.Meta.model.date)
+            .filter(and_(self.model.user_id == user_id, self.model.date > date.today()))
+            .order_by(self.Meta.model.date.asc())
+            .limit(1)
+        )
+        result = await self.accessor.query_execute(query)
+        if salary := result.mappings().one_or_none():
+            return salary
+        return None
