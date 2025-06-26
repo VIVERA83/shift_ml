@@ -1,9 +1,7 @@
-import uuid
-
 from fastapi import APIRouter
 
 from core.lifespan import store
-from web.schema import UserSchema, CreateUserSchema
+from web.user.schema import UserSchema, CreateUserSchema
 
 auth_route = APIRouter(prefix="/auth", tags=["AUTH"])
 

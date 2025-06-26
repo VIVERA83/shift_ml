@@ -6,8 +6,8 @@ sys.path.insert(1, os.path.join(os.getcwd(), "app"))
 dotenv.load_dotenv()
 
 from core.settings import PostgresSettings
-from store.accessors.user.models import *
-
+from store.accessors.user.models import UserModel
+from store.accessors.salary.models import *
 
 
 import asyncio
