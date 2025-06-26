@@ -1,6 +1,4 @@
-from uuid import UUID
-
-from pydantic import BaseModel, field_validator, Field, EmailStr, model_validator
+from pydantic import BaseModel,  Field, EmailStr, model_validator
 
 
 class BaseUserSchema(BaseModel):
