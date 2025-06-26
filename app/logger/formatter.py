@@ -1,5 +1,6 @@
 import logging
 
+
 class ColoredFormatter(logging.Formatter):
     COLOR_CODES = {
         logging.DEBUG: "\033[36m",  # Cyan

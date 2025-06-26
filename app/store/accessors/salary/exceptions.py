@@ -7,6 +7,7 @@ class UserDuplicateException(ExceptionBase):
     )
     code = 400
 
+
 class NotFoundException(ExceptionBase):
     args = ("Пользователь с указанным идентификатором не найден.",)
     code = 404

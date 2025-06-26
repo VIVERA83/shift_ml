@@ -5,7 +5,6 @@ from pydantic_settings import BaseSettings
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__name__)))
 
 
-
 class Base(BaseSettings):
     class Config:
         env_nested_delimiter = "__"
@@ -86,6 +85,7 @@ class Settings:
     swagger: SwaggerConfig = SwaggerConfig()
     # Секция настроек базы данных POSTGRES
     postgres: PostgresSettings = PostgresSettings()
+
 
 class UvicornSettings(Base):
 

@@ -4,6 +4,7 @@ import sys
 
 from .formatter import ColoredFormatter
 
+
 class CustomLogger(logging.Logger):
 
     def __init__(self, level: int = 10):
@@ -33,5 +34,7 @@ class CustomLogger(logging.Logger):
         return {
             "custom_func": inspect.stack()[2].function,
             "custom_lineno": inspect.stack()[2].lineno,
-            "custom_name": list(inspect.stack()[2].frame.f_locals.values())[0].__class__.__name__
+            "custom_name": list(inspect.stack()[2].frame.f_locals.values())[
+                0
+            ].__class__.__name__,
         }
