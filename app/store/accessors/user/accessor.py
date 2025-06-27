@@ -13,4 +13,6 @@ class UserAccessor(BaseAccessor):
     async def get_by_email(self, email: str) -> Optional[UserModel]:
         query = self.accessor.get_query_select_by_model(self.Meta.model).filter(self.Meta.model.email == email).limit(1)
         result = await self.accessor.query_execute(query)
-        return result.one_or_none()
+        if users:=result.first():
+            return users[0]
+        return None

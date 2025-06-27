@@ -16,7 +16,8 @@ auth_route = APIRouter(prefix="/auth", tags=["AUTH"])
 )
 async def create_user(user_data: CreateUserSchema):
     user = await store.user_accessor.create(
-        **user_data.model_dump(exclude={"password_confirm"})
+        **user_data.model_dump(exclude={"password", "password_confirm"}),
+        password=pwd_context.hash(user_data.password)
     )
     return user.to_dict
 
@@ -25,11 +26,10 @@ async def create_user(user_data: CreateUserSchema):
 @auth_route.post("/login",
                  summary="Получение токенов",
                  description="Получение токенов для доступа к API",
-                 response_model=UserLoginSchema,
+                 # response_model=UserLoginSchema,
                  )
-async def login(form_data: UserLoginSchema = Depends()):
+async def login(form_data: UserLoginSchema):
     user = await store.user_accessor.get_by_email(form_data.email)
-    ic(form_data.password, user.password)
     if not user or not pwd_context.verify(form_data.password, user.password):
         raise HTTPException(status_code=400, detail="Invalid credentials")
 

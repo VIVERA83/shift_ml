@@ -24,14 +24,14 @@ def create_token(data: dict, expires_delta: timedelta):
     to_encode = data.copy()
     expire = datetime.now() + expires_delta
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    return jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
 
 
 # Access Token (короткоживущий)
 def create_access_token(user_id: str):
     return create_token(
         {"sub": user_id},
-        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        expires_delta=timedelta(minutes=settings.access_token_expire_minutes)
     )
 
 
@@ -39,7 +39,7 @@ def create_access_token(user_id: str):
 def create_refresh_token(user_id: str):
     refresh_token = create_token(
         {"sub": user_id, "type": "refresh"},
-        expires_delta=timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+        expires_delta=timedelta(days=settings.refresh_token_expire_days)
     )
     redis.set(f"refresh:{user_id}", refresh_token)
     return refresh_token
@@ -48,7 +48,7 @@ def create_refresh_token(user_id: str):
 # Проверка токена
 def verify_token(token: str = Depends(oauth2_scheme)):
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
         user_id = payload.get("sub")
         if not user_id:
             raise HTTPException(status_code=401, detail="Invalid token")
@@ -60,7 +60,7 @@ def verify_token(token: str = Depends(oauth2_scheme)):
 # Проверка refresh-токена
 def verify_refresh_token(token: str):
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
         if payload.get("type") != "refresh":
             raise HTTPException(status_code=401, detail="Not a refresh token")
 
