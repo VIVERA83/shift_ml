@@ -7,3 +7,4 @@ fastapi==0.115.13
 asyncpg==0.30.0
 sqlalchemy==2.0.41
 alembic==1.16.2
+sqladmin==0.20.1

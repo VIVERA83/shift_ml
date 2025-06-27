@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.applications import AppType
 
-
+from admin.views import setup_admin
 from core.lifespan import lifespan
 from core.middelware import setup_middleware
 
@@ -25,6 +25,7 @@ def setup() -> "AppType":
     # app.settings = settings
     # setup_logging(app)
     # setup_store(app)
+    setup_admin(app)
     setup_middleware(app)
     setup_routes(app)
     logger.info(f"Swagger link: ")

@@ -30,8 +30,8 @@ async def get_current_salary(request: Request):
 
 @salary_route.get(
     "/next_date_change",
-    summary="Дата следующего изменения зарплаты",
-    description="Получить дату следующего изменения зарплаты. ",
+    summary="Дата следующего повышения зарплаты",
+    description="Получить дату следующего повышения зарплаты. ",
     response_model=Optional[DateSchema],
 )
 async def next_date_change():
