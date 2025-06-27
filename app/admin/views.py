@@ -1,16 +1,41 @@
-from sqladmin import Admin, ModelView
+from sqladmin import ModelView
 
-from core.lifespan import store
+from store.accessors.salary.models import SalaryModel
 from store.accessors.user.models import UserModel
 
 
-# Регистрируем модели
 class UserAdmin(ModelView, model=UserModel):
-    column_list = [UserModel.id, UserModel.username, UserModel.email]
+    name = "Сотрудник"
+    name_plural = "Сотрудники"
+    column_searchable_list = [
+        UserModel.username,
+        UserModel.email,
+    ]
+    column_sortable_list = [
+        UserModel.username,
+    ]
+    column_list = [
+        UserModel.id,
+        UserModel.username,
+        UserModel.email,
+    ]
+    column_labels = {
+        UserModel.email: "Email",
+        UserModel.username: "Фамилия Имя Отчество",
+    }
 
 
-
-
-def setup_admin(app):
-    admin = Admin(app,store.database.postgres._engine)
-    admin.add_view(UserAdmin)
+class SalaryAdmin(ModelView, model=SalaryModel):
+    name = "Зарплата"
+    name_plural = "Зарплаты"
+    column_labels = {
+        SalaryModel.salary: "Зарплата",
+        SalaryModel.date: "Дата назначения",
+        SalaryModel.user_id: "ID сотрудника",
+    }
+    column_list = [
+        SalaryModel.id,
+        SalaryModel.salary,
+        SalaryModel.date,
+        SalaryModel.user_id,
+    ]

@@ -36,3 +36,9 @@ alembic revision --autogenerate -m "Initial tables"
 alembic upgrade head
 ```
 
+- __WINDOWS__ : Генерация случайной строчки длинной в 32 символа (для задания SECRET KEY)
+
+```bash
+Add-Type -AssemblyName System.Web
+[System.Web.Security.Membership]::GeneratePassword(32, 0)
+```

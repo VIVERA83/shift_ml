@@ -28,3 +28,12 @@ class CreateUserSchema(BaseUserSchema):
 
 class UserSchema(BaseUserSchema):
     id: int = Field(description="идентификатор пользователя")
+
+
+class UserLoginSchema(BaseModel):
+    email: EmailStr
+    password: str  # Хранить хеш, не plain text!
+
+
+class UserInDBSchema(UserLoginSchema):
+    id: str

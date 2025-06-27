@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <script src="../static/js/scripts.js"></script>
+    <title>Главная страница | FastAPI</title>
+
+</head>
+<body>
+<header class="header">
+    <div class="logo">🚀</div>
+    <h1>Добро пожаловать в FastAPI</h1>
+    <p class="subtitle">Мощный и современный фреймворк для создания API на Python</p>
+</header>
+
+<div class="container">
+    <div class="cards">
+        <!-- Карточка 1: Админ-панель -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">👑</div>
+                <h2 class="card-title">Админ-панель</h2>
+            </div>
+            <div class="card-body">
+                <p>Управление пользователями, настройками и данными системы.</p>
+                <p>Доступ только для администраторов.</p>
+                <a href="/admin" class="btn">Перейти в админку</a>
+            </div>
+        </div>
+
+        <!-- Карточка 2: Swagger документация -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">📚</div>
+                <h2 class="card-title">Swagger UI</h2>
+            </div>
+            <div class="card-body">
+                <p>Интерактивная документация API с возможностью тестирования эндпоинтов.</p>
+                <p>Все доступные методы и параметры.</p>
+                <a href="/docs" class="btn">Открыть документацию</a>
+            </div>
+        </div>
+
+        <!-- Карточка 3: Авторизация -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">🔑</div>
+                <h2 class="card-title">Авторизация</h2>
+            </div>
+            <div class="card-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Введите ваш email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" id="password" placeholder="Введите пароль" required>
+                    </div>
+                    <button type="submit" class="btn">Войти в систему</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem; opacity: 0.7;">
+                    <a href="/register" class="btn-secondary" style="margin-top: 1rem;">Регистрация</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>© 2025 FastAPI. Все права защищены.</p>
+</footer>
+</body>
+</html>

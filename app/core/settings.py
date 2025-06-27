@@ -72,8 +72,27 @@ class PostgresSettings(Base):
         return super().__str__().replace(self.postgres_password, "******")
 
 
-class TgSettings(Base):
-    tg_bot_token: str = "<TOKEN>"
+class RedisSettings(Base):
+    redis_host: str = "127.0.0.1"
+    redis_port: int = 6379
+
+    def dsn(self, show_secret: bool = False) -> str:
+        """Возвращает строку подключения к базе данных.
+
+        :param show_secret: Если True, то пароль будет показан в строке подключения. По умолчанию False.
+        """
+
+        return "redis://{host}:{port}".format(
+            host=self.redis_host,
+            port=self.redis_port,
+        )
+
+
+class AuthSettings(BaseSettings):
+    secret_key: str = "Life is beautiful when you smile"
+    algorithm: str = "HS256"
+    access_token_expire_minutes: int = 15
+    refresh_token_expire_days: int = 7
 
 
 class Settings:
@@ -85,10 +104,10 @@ class Settings:
     swagger: SwaggerConfig = SwaggerConfig()
     # Секция настроек базы данных POSTGRES
     postgres: PostgresSettings = PostgresSettings()
-
+    # Секция настроек базы данных Redis
+    redis: RedisSettings = RedisSettings()
 
 class UvicornSettings(Base):
-
     host: str = "127.0.0.1"
     port: int = 8081
     workers: int = 1

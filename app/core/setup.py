@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from fastapi.applications import AppType
 
-from admin.views import setup_admin
+from admin.setup import setup_admin
 from core.lifespan import lifespan
 from core.middelware import setup_middleware
-
+from fastapi.staticfiles import StaticFiles
 from core.routes import setup_routes
 from logger.logger import CustomLogger
+
 
 
 def setup() -> "AppType":
@@ -22,6 +23,7 @@ def setup() -> "AppType":
         # title=settings.title,
         # description=settings.description,
     )
+    app.mount("/static", StaticFiles(directory="static"), name="static")
     # app.settings = settings
     # setup_logging(app)
     # setup_store(app)
