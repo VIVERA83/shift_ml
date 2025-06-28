@@ -1,23 +1,19 @@
 from logging import Logger, getLogger
 
 from core.settings import Settings
-from store.accessors.salary.accessor import SalaryAccessor
-from store.accessors.user.accessor import UserAccessor
+from store.accessors.accessor import Accessor
+from store.base import BaseConnection
 from store.database.database import Database
+from store.managers.manager import Manager
 
 
-class Store:
+class Store(BaseConnection):
     """Класс-хранилище для приложения."""
 
     def __init__(self, settings: "Settings", logger: Logger = getLogger(__name__)):
-        self.database = Database(settings, logger)
-
-        # Классы для работы с БД
-        self.user_accessor = UserAccessor(self.database.postgres, logger)
-        self.salary_accessor = SalaryAccessor(self.database.postgres, logger)
-
-    async def connect(self, *_, **__):
-        await self.database.connect()
-
-    async def disconnect(self, *_, **__):
-        await self.database.disconnect()
+        # Подключение к базам данных
+        self.db = Database(settings, logger)
+        # Ассессоры, для работы с базами данных (Создание, чтение, обновление, удаление)
+        self.accessor = Accessor(settings, self.db, logger)
+        # Менеджеры, для работы логикой приложения (Создание, чтение, обновление, удаление)
+        self.manager = Manager(settings, self.db, self.accessor, logger)

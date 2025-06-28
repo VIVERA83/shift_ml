@@ -1,17 +1,14 @@
 from logging import Logger, getLogger
 
 from core.settings import Settings
+from store.base import BaseConnection
 from store.database.postgres.accessor import PostgresAccessor
+from store.database.redis_db.accessor import RedisAccessor
 
 
-class Database:
+class Database(BaseConnection):
     """Класс работы с базами данных."""
 
     def __init__(self, settings: "Settings", logger: Logger = getLogger(__name__)):
         self.postgres = PostgresAccessor(settings.postgres, logger)
-
-    async def connect(self, *_, **__):
-        await self.postgres.connect()
-
-    async def disconnect(self, *_, **__):
-        await self.postgres.disconnect()
+        self.redis = RedisAccessor(settings.redis, logger)

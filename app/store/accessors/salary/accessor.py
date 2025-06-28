@@ -1,11 +1,10 @@
 from datetime import date
 
-from icecream import ic
 from sqlalchemy import and_
 
+from store.database.postgres.accessor import BaseAccessor
 from .exceptions import UserDuplicateException, NotFoundException
 from .models import SalaryModel
-from store.database.postgres.accessor import BaseAccessor
 
 
 class SalaryAccessor(BaseAccessor):
@@ -14,6 +13,7 @@ class SalaryAccessor(BaseAccessor):
         duplicate = UserDuplicateException
         not_found = NotFoundException
 
+    @BaseAccessor._exception_handler
     async def get_current_salary(self, user_id: int):
         query = (
             self.accessor.get_query_select_by_fields("*")
@@ -24,10 +24,11 @@ class SalaryAccessor(BaseAccessor):
             .limit(1)
         )
         result = await self.accessor.query_execute(query)
-        if salary := result.mappings().one_or_none():
-            return self.Meta.model(**salary)
-        return None
 
+        salary = result.mappings().one()
+        return self.Meta.model(**salary)
+
+    @BaseAccessor._exception_handler
     async def get_next_date_change(self, user_id: int):
         query = (
             self.accessor.get_query_select_by_fields(self.Meta.model.date)

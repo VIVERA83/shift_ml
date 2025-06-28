@@ -4,7 +4,6 @@ from typing import Any, Callable, Literal, ParamSpec, Type, TypeVar, Union
 from uuid import UUID
 
 from asyncpg import UniqueViolationError
-from core.settings import PostgresSettings
 from sqlalchemy import delete, func, insert, select, text, update
 from sqlalchemy.engine import Result
 from sqlalchemy.exc import DBAPIError, IntegrityError, NoResultFound
@@ -12,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from sqlalchemy.orm import MappedColumn, InstrumentedAttribute
 from sqlalchemy.sql.elements import TextClause
 
+from core.settings import PostgresSettings, AdminSettings
 from .exceptions import (
     DataBaseConnectionException,
     DataBaseUnknownException,
@@ -30,7 +30,7 @@ _RWrapped = TypeVar("_RWrapped")
 class PostgresAccessor:
 
     def __init__(
-        self, settings: PostgresSettings, logger: Logger = getLogger("PostgresAccessor")
+            self, settings: PostgresSettings, logger: Logger = getLogger("PostgresAccessor")
     ):
         self.settings = settings
         self.logger = logger
@@ -65,7 +65,7 @@ class PostgresAccessor:
 
     @staticmethod
     def get_query_select_by_fields(
-        *select_field: Union[MappedColumn, Literal["*"], InstrumentedAttribute]
+            *select_field: Union[MappedColumn, Literal["*"], InstrumentedAttribute]
     ) -> Query:
         return select(*select_field)
 
@@ -108,8 +108,8 @@ class BaseAccessor:
 
     def __init__(self, accessor: PostgresAccessor, loger: Logger):
         self.__accessor = accessor
-        self.logger = loger
         self.__init_meta_class()
+        self.logger = loger
         self.logger.info(f"{self.__class__.__name__} инициализирован.")
 
     def __init_meta_class(self):
@@ -141,7 +141,7 @@ class BaseAccessor:
         )
 
     def _exception_handler(
-        self: Callable[_PWrapped, _RWrapped],
+            self: Callable[_PWrapped, _RWrapped],
     ) -> Callable[_PWrapped, _RWrapped]:
         @wraps(self)
         async def wrapper(cls, *args, **kwargs):
@@ -173,15 +173,12 @@ class BaseAccessor:
         return self.__accessor
 
     @_exception_handler  # noqa
-    async def create(self, **fields: dict) -> Model:
-        self.logger.debug(
-            f"{self.Meta.model.__name__}.create входящие параметры: {fields}"
-        )
+    async def create(self, **fields) -> Model:
         model = self.Meta.model(**fields)
         async with self.accessor.session as session:
             session.add(model)
             await session.commit()
-        self.logger.info(f"Создан {self.Meta.model.__name__} с полями {fields}")
+        self.logger.info(f"Создан {model} {model.to_dict}")
         return model
 
     @_exception_handler  # noqa

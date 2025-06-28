@@ -75,6 +75,7 @@ class PostgresSettings(Base):
 class RedisSettings(Base):
     redis_host: str = "127.0.0.1"
     redis_port: int = 6379
+    redis_db: int = 0
 
     def dsn(self, show_secret: bool = False) -> str:
         """Возвращает строку подключения к базе данных.
@@ -82,9 +83,10 @@ class RedisSettings(Base):
         :param show_secret: Если True, то пароль будет показан в строке подключения. По умолчанию False.
         """
 
-        return "redis://{host}:{port}".format(
+        return "redis://{host}:{port}/{db}".format(
             host=self.redis_host,
             port=self.redis_port,
+            db=self.redis_db,
         )
 
 
@@ -93,6 +95,12 @@ class AuthSettings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 15
     refresh_token_expire_days: int = 7
+
+
+class AdminSettings(BaseSettings):
+    username: str = "admin"
+    admin_password: str = "admin"
+    admin_email: str = "admin@admin.com"
 
 
 class Settings:
@@ -106,6 +114,11 @@ class Settings:
     postgres: PostgresSettings = PostgresSettings()
     # Секция настроек базы данных Redis
     redis: RedisSettings = RedisSettings()
+    # Секция настроек авторизации
+    auth: AuthSettings = AuthSettings()
+    # Секция настроек администратора
+    admin: AdminSettings = AdminSettings()
+
 
 class UvicornSettings(Base):
     host: str = "127.0.0.1"

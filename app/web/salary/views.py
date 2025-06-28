@@ -15,17 +15,17 @@ salary_route = APIRouter(prefix="/salary", tags=["SALARY"])
     response_model=SalarySchema,
 )
 async def create_salary(salary_data: SalarySchema):
-    return await store.salary_accessor.create(**salary_data.model_dump())
+    return await store.accessor.salary.create(**salary_data.model_dump())
 
 
 @salary_route.get(
     "",
     summary="Текущая зарплата",
     description="Получить текущую зарплату пользователя. ",
-    response_model=SalarySchema,
+    response_model=Optional[SalarySchema],
 )
 async def get_current_salary(request: Request):
-    return await store.salary_accessor.get_current_salary(1)
+    return await store.accessor.salary.get_current_salary(int(request.state.user_id))
 
 
 @salary_route.get(
@@ -34,5 +34,5 @@ async def get_current_salary(request: Request):
     description="Получить дату следующего повышения зарплаты. ",
     response_model=Optional[DateSchema],
 )
-async def next_date_change():
-    return await store.salary_accessor.get_next_date_change(1)
+async def next_date_change(request: Request):
+    return await store.accessor.salary.get_next_date_change(int(request.state.user_id))
