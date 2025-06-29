@@ -1,0 +1,13 @@
+services:
+
+  redis:
+    restart: always
+    image: redis/redis-stack:latest
+    volumes:
+      - redis_volume:/data
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+
+
+volumes:
+  redis_volume:
