@@ -76,6 +76,7 @@ class RedisSettings(Base):
     redis_host: str = "127.0.0.1"
     redis_port: int = 6379
     redis_db: int = 0
+    redis_password: str = ""
 
     def dsn(self, show_secret: bool = False) -> str:
         """Возвращает строку подключения к базе данных.
@@ -83,10 +84,11 @@ class RedisSettings(Base):
         :param show_secret: Если True, то пароль будет показан в строке подключения. По умолчанию False.
         """
 
-        return "redis://{host}:{port}/{db}".format(
+        return "redis://:{password}@{host}:{port}/{db}".format(
             host=self.redis_host,
             port=self.redis_port,
             db=self.redis_db,
+            password=(self.redis_password if show_secret else "******"),
         )
 
 

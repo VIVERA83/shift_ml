@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
                 .then(response => {
                     if (!response.ok) {
+
                         return response.json().then(err => {
                             throw err;
                         });
@@ -28,6 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     return response.json();
                 })
                 .then(data => {
+                    localStorage.setItem("access_token", data.access_token)
+                    console.log(localStorage.getItem("access_token"))
                     // Успешная регистрация
                     registerForm.style.display = 'none';
                     successMessage.style.display = 'block';
@@ -45,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Обработка ошибок
                     console.error('Ошибка регистрации:', error);
 
-                    registerForm.style.display = 'none';
+                    // registerForm.style.display = 'none';
                     showError(error.message || 'Неизвестная ошибка сервера');
 
                 });
@@ -72,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Перенаправление (в реальном приложении)
             setTimeout(() => {
                 alert('Успешный вход! Перенаправление...');
-                window.location.href = '/dashboard';
             }, 1000);
         });
     }
