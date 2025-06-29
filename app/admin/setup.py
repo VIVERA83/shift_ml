@@ -19,7 +19,9 @@ class AdminAuth(AuthenticationBackend):
         email, password = form["email"], form["password"]
 
         if user := await self._store.accessor.user.get_by_email(email):
-            if user.role == "admin" and  self._store.accessor.token.verify_password(password, user.password):
+            if user.role == "admin" and self._store.accessor.token.verify_password(
+                password, user.password
+            ):
                 access_token = self._store.accessor.token.create_access_token(user.id)
                 request.session.update({"token": access_token})
                 return True

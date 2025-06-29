@@ -9,6 +9,49 @@ document.addEventListener('DOMContentLoaded', function () {
             const password = document.getElementById('password').value;
 
             // Здесь будет вызов API для авторизации
+            fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw err;
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Успешная регистрация
+                    registerForm.style.display = 'none';
+                    successMessage.style.display = 'block';
+
+                    // Анимация появления
+                    successMessage.animate([
+                        {opacity: 0, transform: 'translateY(20px)'},
+                        {opacity: 1, transform: 'translateY(0)'}
+                    ], {
+                        duration: 500,
+                        easing: 'ease-out'
+                    });
+                })
+                .catch(error => {
+                    // Обработка ошибок
+                    console.error('Ошибка регистрации:', error);
+
+                    registerForm.style.display = 'none';
+                    showError(error.message || 'Неизвестная ошибка сервера');
+
+                });
+
+            //
+
             console.log('Авторизация:', {email, password});
 
             // Эффект успешной авторизации

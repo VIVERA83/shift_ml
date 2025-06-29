@@ -13,7 +13,7 @@ def setup_openapi(app: FastAPI):
     openapi_schema["info"]["contact"] = {
         "name": "Support Team",
         "email": "support@company.com",
-        "url": "http://0.0.0.0:8006"
+        "url": "http://0.0.0.0:8006",
     }
 
     openapi_schema["components"]["securitySchemes"] = {
@@ -21,7 +21,7 @@ def setup_openapi(app: FastAPI):
             "type": "http",
             "scheme": "bearer",
             "bearerFormat": "JWT",
-            "description": "Enter JWT token in format: **Bearer <token>**"
+            "description": "Enter JWT token in format: **Bearer <token>**",
         }
     }
 

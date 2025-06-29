@@ -30,7 +30,7 @@ _RWrapped = TypeVar("_RWrapped")
 class PostgresAccessor:
 
     def __init__(
-            self, settings: PostgresSettings, logger: Logger = getLogger("PostgresAccessor")
+        self, settings: PostgresSettings, logger: Logger = getLogger("PostgresAccessor")
     ):
         self.settings = settings
         self.logger = logger
@@ -65,7 +65,7 @@ class PostgresAccessor:
 
     @staticmethod
     def get_query_select_by_fields(
-            *select_field: Union[MappedColumn, Literal["*"], InstrumentedAttribute]
+        *select_field: Union[MappedColumn, Literal["*"], InstrumentedAttribute]
     ) -> Query:
         return select(*select_field)
 
@@ -141,7 +141,7 @@ class BaseAccessor:
         )
 
     def _exception_handler(
-            self: Callable[_PWrapped, _RWrapped],
+        self: Callable[_PWrapped, _RWrapped],
     ) -> Callable[_PWrapped, _RWrapped]:
         @wraps(self)
         async def wrapper(cls, *args, **kwargs):

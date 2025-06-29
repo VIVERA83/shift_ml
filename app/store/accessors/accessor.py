@@ -11,7 +11,9 @@ from store.database.database import Database
 class Accessor(BaseConnection):
     """Класс работы с ассессорами."""
 
-    def __init__(self, settings: "Settings", db: "Database", logger: Logger = getLogger(__name__)):
+    def __init__(
+        self, settings: "Settings", db: "Database", logger: Logger = getLogger(__name__)
+    ):
         self.user = UserAccessor(settings.admin, accessor=db.postgres, loger=logger)
         self.salary = SalaryAccessor(db.postgres, logger)
         self.token = TokenAccessor(settings.auth, db.redis, logger)

@@ -1,0 +1,172 @@
+.register-container {
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.register-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
+
+.password-strength {
+    height: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.strength-meter {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 5px;
+}
+
+.weak {
+    background: var(--danger);
+    width: 33%;
+}
+
+.medium {
+    background: orange;
+    width: 66%;
+}
+
+.strong {
+    background: var(--success);
+    width: 100%;
+}
+
+.password-tips {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.success-message {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    background: rgba(67, 206, 162, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(67, 206, 162, 0.3);
+    margin-top: 2rem;
+    animation: fadeIn 0.5s forwards;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: var(--success);
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    color: var(--danger);
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Стили для сообщения об ошибке */
+.error-message {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    margin-top: 2rem;
+    animation: fadeIn 0.5s forwards;
+}
+
+.error-icon {
+    font-size: 4rem;
+    color: var(--danger);
+    margin-bottom: 1rem;
+    animation: shake 0.5s ease-in-out;
+}
+
+.error-detail {
+    font-size: 1.1rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border-left: 4px solid var(--danger);
+}
+
+.btn-error {
+    background: linear-gradient(135deg, var(--danger), #e55353);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.btn-error:hover {
+    background: linear-gradient(135deg, #e55353, #cc4a4a);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.5);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%, 60% {
+        transform: translateX(-5px);
+    }
+    40%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* Дополнительные стили для формы регистрации */
+.error-field {
+    border: 1px solid var(--danger) !important;
+    background: rgba(255, 107, 107, 0.1) !important;
+}
+
+.field-error {
+    color: var(--danger);
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    display: block;
+}

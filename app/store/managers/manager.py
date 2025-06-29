@@ -10,10 +10,9 @@ class Manager(BaseConnection):
     """Класс работы с менеджерами."""
 
     def __init__(
-            self,
-            settings: Settings,
-            db: "Database",
-            accessors: Accessor,
-            logger: Logger = getLogger(__name__),
-    ):
-        ...
+        self,
+        settings: Settings,
+        db: "Database",
+        accessors: Accessor,
+        logger: Logger = getLogger(__name__),
+    ): ...

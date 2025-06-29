@@ -11,8 +11,12 @@ from store.database.redis_db.accessor import RedisAccessor
 
 class TokenAccessor:
 
-    def __init__(self, settings: AuthSettings, redis: RedisAccessor,
-                 logger: Logger = getLogger("TokenAccessor")):
+    def __init__(
+        self,
+        settings: AuthSettings,
+        redis: RedisAccessor,
+        logger: Logger = getLogger("TokenAccessor"),
+    ):
         self.settings = settings
         self.redis = redis
         self.logger = logger

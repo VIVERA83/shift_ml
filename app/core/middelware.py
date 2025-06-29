@@ -26,9 +26,11 @@ EXCLUDED_PATHS = [
     "/docs",
     "/redoc",
     "/openapi.json",
+    "/register",
+    "/registration",
     r"^/auth/[^?#]*$",
     r"^/static/?([^?#]*)$",
-    r"^/admin/?([^?#]*)$"
+    r"^/admin/?([^?#]*)$",
 ]
 
 
@@ -39,7 +41,7 @@ class ErrorHandlingMiddleware(BaseHTTPMiddleware):
         self.logger = logger
 
     async def dispatch(
-            self, request: Request, call_next: RequestResponseEndpoint
+        self, request: Request, call_next: RequestResponseEndpoint
     ) -> Response:
         try:
             response = await call_next(request)
@@ -56,13 +58,22 @@ class ErrorHandlingMiddleware(BaseHTTPMiddleware):
 
 
 class RoleCheckerMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app: FastAPI, token_accessor: TokenAccessor, required_roles: list[str] = None):
+    def __init__(
+        self,
+        app: FastAPI,
+        token_accessor: TokenAccessor,
+        required_roles: list[str] = None,
+    ):
         super().__init__(app)
         self.token_accessor = token_accessor
-        self.oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
+        self.oauth2_scheme = OAuth2PasswordBearer(
+            tokenUrl="/auth/login", auto_error=False
+        )
         self.required_roles = required_roles or []
 
-    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable]) -> Response:
+    async def dispatch(
+        self, request: Request, call_next: Callable[[Request], Awaitable]
+    ) -> Response:
 
         for path in EXCLUDED_PATHS:
             if re.fullmatch(path, request.url.path):
@@ -77,5 +88,7 @@ class RoleCheckerMiddleware(BaseHTTPMiddleware):
 
 
 def setup_middleware(app: FastAPI, logger: Logger = getLogger(__name__)):
-    app.add_middleware(RoleCheckerMiddleware, token_accessor=store.accessor.token)  # noqa type: ignore
+    app.add_middleware(
+        RoleCheckerMiddleware, token_accessor=store.accessor.token
+    )  # noqa type: ignore
     app.add_middleware(ErrorHandlingMiddleware, logger=logger)  # noqa type: ignore

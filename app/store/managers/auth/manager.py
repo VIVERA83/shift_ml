@@ -10,8 +10,12 @@ from store.database.redis_db.accessor import RedisAccessor
 
 class AuthManager:
 
-    def __init__(self, settings: AuthSettings, redis: RedisAccessor,
-                 logger: Logger = getLogger("AuthManager")):
+    def __init__(
+        self,
+        settings: AuthSettings,
+        redis: RedisAccessor,
+        logger: Logger = getLogger("AuthManager"),
+    ):
         self.settings = settings
         self.redis = redis
         self.logger = logger
@@ -47,7 +51,6 @@ class AuthManager:
 
     async def verify_password(self, password: str, password_hash: str) -> bool:
         return self.pwd_context.verify(password, password_hash)
-
 
     # Проверка токена
     def verify_token(self, token: str):

@@ -42,4 +42,8 @@ class SalaryAdmin(ModelView, model=SalaryModel):
     form_include_pk = True  # Важное изменение!
 
     # Или более гибкий вариант:
-    form_columns = [SalaryModel.user_id, SalaryModel.salary, SalaryModel.date]  # Включаем id вручную
+    form_columns = [
+        SalaryModel.user_id,
+        SalaryModel.salary,
+        SalaryModel.date,
+    ]  # Включаем id вручную

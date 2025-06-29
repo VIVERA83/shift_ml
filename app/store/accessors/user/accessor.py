@@ -17,11 +17,12 @@ class UserAccessor(BaseAccessor):
 
     async def connect(self):
         try:
-            await self.create(username=self.settings.username,
-                              email=self.settings.admin_email,
-                              password=self.settings.admin_password,
-                              role="admin",
-                              )
+            await self.create(
+                username=self.settings.username,
+                email=self.settings.admin_email,
+                password=self.settings.admin_password,
+                role="admin",
+            )
         except Exception as e:
             self.logger.error(e)
 

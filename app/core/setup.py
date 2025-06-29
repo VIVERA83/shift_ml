@@ -14,7 +14,9 @@ from logger.logger import CustomLogger
 def setup() -> "AppType":
     settings = Settings()
     logger = CustomLogger()
-    app = FastAPI(lifespan=lifespan, )
+    app = FastAPI(
+        lifespan=lifespan,
+    )
     app.mount("/static", StaticFiles(directory="static"), name="static")
     setup_admin(app, settings.auth.secret_key)
     setup_middleware(app, logger)

@@ -27,21 +27,17 @@ async def registration(user_data: CreateUserSchema):
 )
 async def login(response: Response, form_data: UserLoginSchema):
     if user := await store.accessor.user.get_by_email(form_data.email):
-        if await store.accessor.token.verify_password(form_data.password, user.password):
+        if store.accessor.token.verify_password(form_data.password, user.password):
             access_token = store.accessor.token.create_access_token(user.id)
             refresh_token = await store.accessor.token.create_refresh_token(user.id)
-            response.set_cookie(
-                "access_token", access_token,
-            )
+            response.set_cookie("access_token", access_token)
+            response.set_cookie("refresh_token", refresh_token)
             return {
                 "access_token": access_token,
                 "refresh_token": refresh_token,
                 "token_type": "bearer",
             }
-
         raise HTTPException(status_code=400, detail="Invalid password or email")
-    # user = await store.accessor.user.get_by_email(form_data.email)
-    # if not user or not pwd_context.verify(form_data.password, user.password):
     raise HTTPException(status_code=400, detail="Invalid credentials")
 
 #
@@ -52,8 +48,3 @@ async def login(response: Response, form_data: UserLoginSchema):
 #     new_access_token = create_access_token(user_id)
 #     return {"access_token": new_access_token, "token_type": "bearer"}
 #
-#
-# # Защищенный эндпоинт
-# @auth_route.get("/me")
-# async def read_me(user_id: str = Depends(verify_token)):
-#     return {"user_id": user_id}
