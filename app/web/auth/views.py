@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
-from icecream import ic
 
 from core.lifespan import store
 from web.auth.schema import UserSchema, CreateUserSchema, UserLoginSchema
@@ -33,7 +32,6 @@ async def login(response: Response, form_data: UserLoginSchema):
             refresh_token = await store.accessor.token.create_refresh_token(str(user.id))
             response.set_cookie("access_token", access_token)
             response.set_cookie("refresh_token", refresh_token)
-            ic(access_token)
             return {
                 "access_token": access_token,
                 "refresh_token": refresh_token,
@@ -41,12 +39,3 @@ async def login(response: Response, form_data: UserLoginSchema):
             }
         raise HTTPException(status_code=400, detail="Invalid password or email")
     raise HTTPException(status_code=400, detail="Invalid credentials")
-
-#
-# # Обновление access-токена через refresh
-# @app.post("/refresh")
-# async def refresh(token: str):
-#     user_id = verify_refresh_token(token)
-#     new_access_token = create_access_token(user_id)
-#     return {"access_token": new_access_token, "token_type": "bearer"}
-#

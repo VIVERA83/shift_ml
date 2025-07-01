@@ -5,12 +5,11 @@ from typing import Callable, Awaitable
 from fastapi import FastAPI, Request, Response, status, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from icecream import ic
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
 from core.lifespan import store
 from store.accessors.token.accessor import TokenAccessor
-ic.includeContext =True
+
 HTTP_EXCEPTIONS = {
     status.HTTP_404_NOT_FOUND: "Not Found",
     status.HTTP_400_BAD_REQUEST: "Bad Request",
@@ -77,7 +76,7 @@ class CookieAuthMiddleware(BaseHTTPMiddleware):
 
         # Извлекаем токен из куки
         token = request.cookies.get(self.cookie_name, "")
-        ic(f"Token from cookie: {token}")
+
 
         # Проверяем токен
         payload = self.token_accessor.verify_token(token)

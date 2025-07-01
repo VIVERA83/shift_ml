@@ -28,6 +28,25 @@ services:
     command: -p ${POSTGRES_PORT}
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
+  app:
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile_migrations
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    command: alembic upgrade head
 
 volumes:
   redis_volume:

@@ -1,7 +1,7 @@
 from fastapi import Request, APIRouter
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from icecream import ic
+
 
 page_route = APIRouter()
 
@@ -19,5 +19,4 @@ async def registration(request: Request):
 
 @page_route.get("/dashboard", response_class=HTMLResponse)
 async def registration(request: Request):
-    ic("dashboard")
     return templates.TemplateResponse("dashboard.html", {"request": request})
