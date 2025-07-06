@@ -1,8 +1,8 @@
+from datetime import date
 from dataclasses import dataclass
 
 from passlib.context import CryptContext
-from sqlalchemy import TypeDecorator, String
-from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy import TypeDecorator, String, Date, text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from store.database.postgres.base import Base, BaseModel
@@ -48,6 +48,7 @@ class UserModel(Base, BaseModel):
     email: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str] = mapped_column(PasswordHash)
     role: Mapped[str] = mapped_column(Role, nullable=False, default="user")
+    created_at: Mapped[date] = mapped_column(Date, nullable=False, default=date.today)
 
     @property
     def to_dict(self) -> dict:

@@ -23,8 +23,8 @@ class UserAccessor(BaseAccessor):
                 password=self.settings.admin_password,
                 role="admin",
             )
-        except Exception as e:
-            self.logger.error(e)
+        except Exception:
+            self.logger.warning("Запись администратора уже существует.")
 
     async def get_by_email(self, email: str) -> Optional[UserModel]:
         query = (

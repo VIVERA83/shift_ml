@@ -28,8 +28,10 @@ async def registration(user_data: CreateUserSchema):
 async def login(response: Response, form_data: UserLoginSchema):
     if user := await store.accessor.user.get_by_email(form_data.email):
         if store.accessor.token.verify_password(form_data.password, user.password):
-            access_token = store.accessor.token.create_access_token(user.id)
-            refresh_token = await store.accessor.token.create_refresh_token(user.id)
+            access_token = store.accessor.token.create_access_token(str(user.id))
+            refresh_token = await store.accessor.token.create_refresh_token(
+                str(user.id)
+            )
             response.set_cookie("access_token", access_token)
             response.set_cookie("refresh_token", refresh_token)
             return {
@@ -39,12 +41,3 @@ async def login(response: Response, form_data: UserLoginSchema):
             }
         raise HTTPException(status_code=400, detail="Invalid password or email")
     raise HTTPException(status_code=400, detail="Invalid credentials")
-
-#
-# # Обновление access-токена через refresh
-# @app.post("/refresh")
-# async def refresh(token: str):
-#     user_id = verify_refresh_token(token)
-#     new_access_token = create_access_token(user_id)
-#     return {"access_token": new_access_token, "token_type": "bearer"}
-#

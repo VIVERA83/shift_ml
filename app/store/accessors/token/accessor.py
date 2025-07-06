@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 from logging import getLogger, Logger
 from typing import Optional
 
@@ -25,17 +25,26 @@ class TokenAccessor:
     def create_token(self, data: dict, expires_delta: timedelta):
         """Генерация JWT токена."""
         to_encode = data.copy()
-        expire = datetime.now() + expires_delta
+
+        # Используем актуальный метод для получения UTC времени
+        expire = datetime.now(timezone.utc) + expires_delta
+
+        # Конвертируем в UTC без timezone (как ожидает JWT стандарт)
+        expire = expire.replace(tzinfo=None)
+
         to_encode.update({"exp": expire})
+
         return jwt.encode(
             to_encode, self.settings.secret_key, algorithm=self.settings.algorithm
         )
 
     def create_access_token(self, user_id: str):
         """Генерация Access Token (короткоживущий)."""
-
         return self.create_token(
-            {"sub": str(user_id)},
+            {
+                "sub": user_id,
+                "type": "access",
+            },
             expires_delta=timedelta(minutes=self.settings.access_token_expire_minutes),
         )
 
@@ -45,8 +54,11 @@ class TokenAccessor:
             {"sub": user_id, "type": "refresh"},
             expires_delta=timedelta(days=self.settings.refresh_token_expire_days),
         )
-        expire = self.settings.refresh_token_expire_days * 24 * 60 * 60
-        await self.redis.set(f"refresh:{user_id}", refresh_token, expire)
+
+        # Вычисляем срок действия в секундах
+        expire_seconds = self.settings.refresh_token_expire_days * 24 * 60 * 60
+
+        await self.redis.set(f"refresh:{user_id}", refresh_token, expire_seconds)
         return refresh_token
 
     def verify_password(self, password: str, password_hash: str) -> bool:
@@ -58,10 +70,13 @@ class TokenAccessor:
             return jwt.decode(
                 token=token,
                 key=self.settings.secret_key,
-                algorithms=[self.settings.algorithm],
+                algorithms=self.settings.algorithm,
             )
         except JWSError as e:
-            self.logger.error(e)
+            self.logger.error(e, exc_info=True, stack_info=True)
+        except Exception as e:
+            if self.logger:
+                self.logger.exception(f"Не удалось декодировать токен: {e}")
         return None
 
     # except JWTError:
