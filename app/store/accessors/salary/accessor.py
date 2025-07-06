@@ -25,8 +25,9 @@ class SalaryAccessor(BaseAccessor):
         )
         result = await self.accessor.query_execute(query)
 
-        salary = result.mappings().one()
-        return self.Meta.model(**salary)
+        if salary := result.mappings().one_or_none():
+            return self.Meta.model(**salary)
+        return None
 
     @BaseAccessor._exception_handler
     async def get_next_date_change(self, user_id: int):

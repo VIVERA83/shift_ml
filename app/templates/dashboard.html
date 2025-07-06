@@ -9,7 +9,7 @@
     <script src="../static/js/scripts.js"></script>
     <script src="../static/js/profile.js"></script>
     <script src="../static/js/dashboard.js"></script>
-    <title>Профиль пользователя | FastAPI</title>
+    <title>{{ user.username }}</title>
 </head>
 <body>
 <header class="header">
@@ -21,26 +21,17 @@
 <div class="container profile-container">
     <div class="profile-card">
         <div class="profile-header">
-            <div class="profile-avatar">A</div>
+            <div class="profile-avatar">{{ user.username[0] }}</div>
             <div class="profile-info">
-                <h2>Алексей Петров</h2>
-                <p>Старший разработчик | Отдел IT</p>
-                <p>alexey.petrov@company.com</p>
+                <h2>{{ user.username }}</h2>
+                <p>{{ user.email }}</p>
             </div>
         </div>
 
         <div class="profile-stats">
             <div class="stat-card">
                 <div class="stat-label">Стаж в компании</div>
-                <div class="stat-value">3.5 года</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Текущий уровень</div>
-                <div class="stat-value">L3</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Последнее повышение</div>
-                <div class="stat-value">6 мес. назад</div>
+                <div class="stat-value">{{ work_experience }}</div>
             </div>
         </div>
 
@@ -51,56 +42,23 @@
         </div>
 
         <div id="salaryInfo" class="info-container">
-            <h3>Текущая зарплата</h3>
-            <form class="salary-form">
-                <div class="form-group">
-                    <label for="currentSalary">Ваша текущая зарплата</label>
-                    <input type="text" id="currentSalary" value="185 000 ₽" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="bonus">Ежеквартальный бонус</label>
-                    <input type="text" id="bonus" value="37 000 ₽" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="total">Итого за месяц</label>
-                    <input type="text" id="total" value="222 000 ₽" readonly>
-                </div>
-            </form>
-            <p class="highlight">Следующее пересмотрение зарплаты: 15.12.2024</p>
+            <h3>Информация по зарплате</h3>
+            <div class="form-group">
+                <p>Ваша текущая зарплата</p>
+                <p class="highlight">{{ salary }}</p>
+            </div>
         </div>
 
         <div id="promotionInfo" class="info-container">
             <h3>Информация о повышении</h3>
             <p>Ваше следующее повышение запланировано на:</p>
-            <p class="highlight">1 февраля 2025 года</p>
-
-            <div class="progress-container" style="margin: 1.5rem 0;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                    <span>Текущий уровень</span>
-                    <span>Следующий уровень</span>
-                </div>
-                <div style="background: rgba(255,255,255,0.1); height: 12px; border-radius: 6px;">
-                    <div style="background: linear-gradient(135deg, var(--primary), var(--success));
-                                width: 65%; height: 100%; border-radius: 6px;"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
-                    <span>L3</span>
-                    <span>L4</span>
-                </div>
-            </div>
-
-            <p>Для получения повышения вам необходимо выполнить:</p>
-            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-                <li>Завершить проект "Оптимизация API"</li>
-                <li>Провести 2 обучающих семинара</li>
-                <li>Сдать сертификационный экзамен</li>
-            </ul>
+            <p class="highlight">{{ next_update }}</p>
         </div>
     </div>
 </div>
 
 <footer class="footer">
-    <p>© 2025 FastAPI. Все права защищены.</p>
+    <p>© 2025 Тестовое задание. Какие еще права?</p>
 </footer>
 </body>
 </html>

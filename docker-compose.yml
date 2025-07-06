@@ -7,7 +7,7 @@ services:
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
     volumes:
-      - redis_volume:/data
+      - redis_volume:/var/lib/redis/
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
     restart: unless-stopped
@@ -28,25 +28,25 @@ services:
     command: -p ${POSTGRES_PORT}
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
-  app:
-    build: .
-    ports:
-      - ${PORT}:${PORT}
-    depends_on:
-      - postgres
-      - redis
-    env_file:
-      - .env
-
-  migrations:
-    build:
-      context: .
-      dockerfile: Dockerfile_migrations
-    env_file:
-      - .env
-    depends_on:
-      - postgres
-    command: alembic upgrade head
+#  app:
+#    build: .
+#    ports:
+#      - ${PORT}:${PORT}
+#    depends_on:
+#      - postgres
+#      - redis
+#    env_file:
+#      - .env
+#
+#  migrations:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile_migrations
+#    env_file:
+#      - .env
+#    depends_on:
+#      - postgres
+#    command: alembic upgrade head
 
 volumes:
   redis_volume:

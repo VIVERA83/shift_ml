@@ -12,10 +12,10 @@ from store.database.redis_db.accessor import RedisAccessor
 class TokenAccessor:
 
     def __init__(
-            self,
-            settings: AuthSettings,
-            redis: RedisAccessor,
-            logger: Logger = getLogger("TokenAccessor"),
+        self,
+        settings: AuthSettings,
+        redis: RedisAccessor,
+        logger: Logger = getLogger("TokenAccessor"),
     ):
         self.settings = settings
         self.redis = redis
@@ -35,9 +35,7 @@ class TokenAccessor:
         to_encode.update({"exp": expire})
 
         return jwt.encode(
-            to_encode,
-            self.settings.secret_key,
-            algorithm=self.settings.algorithm
+            to_encode, self.settings.secret_key, algorithm=self.settings.algorithm
         )
 
     def create_access_token(self, user_id: str):
@@ -78,9 +76,7 @@ class TokenAccessor:
             self.logger.error(e, exc_info=True, stack_info=True)
         except Exception as e:
             if self.logger:
-                self.logger.exception(
-                    f"Не удалось декодировать токен: {e}"
-                )
+                self.logger.exception(f"Не удалось декодировать токен: {e}")
         return None
 
     # except JWTError:

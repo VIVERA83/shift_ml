@@ -1,8 +1,8 @@
 """Initial tables
 
-Revision ID: b3c4eebd6d3b
+Revision ID: 8566fd591e32
 Revises:
-Create Date: 2025-06-28 23:49:55.336495
+Create Date: 2025-07-06 22:12:39.873845
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 import store
 
 # revision identifiers, used by Alembic.
-revision: str = "b3c4eebd6d3b"
+revision: str = "8566fd591e32"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -31,6 +31,7 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.Column("role", store.accessors.user.models.Role(length=28), nullable=False),
+        sa.Column("created_at", sa.Date(), nullable=False),
         sa.Column("id", sa.INTEGER(), autoincrement=True, nullable=False),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("email"),

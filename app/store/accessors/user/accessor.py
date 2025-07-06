@@ -15,16 +15,16 @@ class UserAccessor(BaseAccessor):
         super().__init__(**kwargs)
         self.settings = settings
 
-    # async def connect(self):
-    #     try:
-    #         await self.create(
-    #             username=self.settings.username,
-    #             email=self.settings.admin_email,
-    #             password=self.settings.admin_password,
-    #             role="admin",
-    #         )
-    #     except Exception as e:
-    #         self.logger.error(e)
+    async def connect(self):
+        try:
+            await self.create(
+                username=self.settings.username,
+                email=self.settings.admin_email,
+                password=self.settings.admin_password,
+                role="admin",
+            )
+        except Exception:
+            self.logger.warning("Запись администратора уже существует.")
 
     async def get_by_email(self, email: str) -> Optional[UserModel]:
         query = (

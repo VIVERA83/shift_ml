@@ -4,6 +4,7 @@ from typing import Any, Callable, Literal, ParamSpec, Type, TypeVar, Union
 from uuid import UUID
 
 from asyncpg import UniqueViolationError
+from sqlalchemy import cast
 from sqlalchemy import delete, func, insert, select, text, update
 from sqlalchemy.engine import Result
 from sqlalchemy.exc import DBAPIError, IntegrityError, NoResultFound

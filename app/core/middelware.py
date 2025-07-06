@@ -30,7 +30,6 @@ EXCLUDED_PATHS = [
     r"^/auth/[^?#]*$",
     r"^/static/?([^?#]*)$",
     r"^/admin/?([^?#]*)$",
-    r"^/dashboard/?([^?#]*)$",  # Добавлен путь к dashboard
 ]
 
 
@@ -40,7 +39,7 @@ class ErrorHandlingMiddleware(BaseHTTPMiddleware):
         self.logger = logger
 
     async def dispatch(
-            self, request: Request, call_next: RequestResponseEndpoint
+        self, request: Request, call_next: RequestResponseEndpoint
     ) -> Response:
         try:
             response = await call_next(request)
@@ -58,16 +57,16 @@ class ErrorHandlingMiddleware(BaseHTTPMiddleware):
 
 class CookieAuthMiddleware(BaseHTTPMiddleware):
     def __init__(
-            self,
-            app: FastAPI,
-            token_accessor: TokenAccessor,
+        self,
+        app: FastAPI,
+        token_accessor: TokenAccessor,
     ):
         super().__init__(app)
         self.token_accessor = token_accessor
         self.cookie_name = "access_token"  # Имя куки, где хранится токен
 
     async def dispatch(
-            self, request: Request, call_next: Callable[[Request], Awaitable]
+        self, request: Request, call_next: Callable[[Request], Awaitable]
     ) -> Response:
         # Проверяем, требуется ли аутентификация для пути
         for path in EXCLUDED_PATHS:
@@ -76,7 +75,6 @@ class CookieAuthMiddleware(BaseHTTPMiddleware):
 
         # Извлекаем токен из куки
         token = request.cookies.get(self.cookie_name, "")
-
 
         # Проверяем токен
         payload = self.token_accessor.verify_token(token)
@@ -90,11 +88,11 @@ class CookieAuthMiddleware(BaseHTTPMiddleware):
 
         # Сохраняем ID пользователя в состоянии запроса
         request.state.user_id = payload.get("sub", None)
+        print(1111111111111)
+        print(request.state.user_id)
         return await call_next(request)
 
 
 def setup_middleware(app: FastAPI, logger: Logger = getLogger(__name__)):
-    app.add_middleware(
-        CookieAuthMiddleware, token_accessor=store.accessor.token
-    )
+    app.add_middleware(CookieAuthMiddleware, token_accessor=store.accessor.token)
     app.add_middleware(ErrorHandlingMiddleware, logger=logger)

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (password.length >= 8) strength += 1;
         if (/\d/.test(password)) strength += 1;
         if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 1;
-        if (/[^a-zA-Z0-9]/.test(password)) strength += 1;
+        if (/[^a-zA-Z0-9а-яА-ЯёЁ]/.test(password)) strength += 1;
 
         passwordStrength.className = 'strength-meter';
         passwordStrength.classList.add(
