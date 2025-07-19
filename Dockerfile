@@ -26,5 +26,5 @@ RUN pip install --upgrade pip  --no-cache-dir
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-
+RUN echo "--host $HOST --port $PORT --workers $WORKERS"
 CMD uvicorn core.setup:setup --host $HOST --port $PORT --workers $WORKERS
