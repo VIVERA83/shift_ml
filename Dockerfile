@@ -8,7 +8,6 @@ ENV WORKERS=1
 
 ENV PORT=8008
 ENV HOST=0.0.0.0
-ENV UVICORN_ARGS "core.setup:setup --host $HOST --port $PORT --workers $WORKERS"
 
 # Settings for PostgresSQL database connections
 ENV POSTGRES_DB=""
@@ -28,4 +27,4 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 
-CMD uvicorn $UVICORN_ARGS
+CMD uvicorn core.setup:setup --host $HOST --port $PORT --workers $WORKERS

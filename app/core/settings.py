@@ -13,13 +13,6 @@ class Base(BaseSettings):
         extra = "ignore"
 
 
-class AppSettings(BaseSettings):
-    """Основные настройки приложения."""
-
-    host: str = "127.0.0.1"
-    port: int = 8081
-
-
 class LogConfig(Base):
     """Настройки логирования.
 
