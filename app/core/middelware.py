@@ -5,7 +5,10 @@ from typing import Callable, Awaitable
 from fastapi import FastAPI, Request, Response, status, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from icecream import ic
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import RedirectResponse
 
 from core.lifespan import store
 from store.accessors.token.accessor import TokenAccessor
@@ -75,7 +78,14 @@ class CookieAuthMiddleware(BaseHTTPMiddleware):
 
         # Извлекаем токен из куки
         token = request.cookies.get(self.cookie_name, "")
+        # Проверяем токен в заголовке Authorization
+        if not token:
+            auth_header = request.headers.get('authorization')
+            if not auth_header or not auth_header.startswith('Bearer '):
+                return RedirectResponse(url='/')
 
+            token = auth_header.split(' ')[1]
+        ic(token)
         # Проверяем токен
         payload = self.token_accessor.verify_token(token)
         if not payload:
@@ -88,11 +98,16 @@ class CookieAuthMiddleware(BaseHTTPMiddleware):
 
         # Сохраняем ID пользователя в состоянии запроса
         request.state.user_id = payload.get("sub", None)
-        print(1111111111111)
-        print(request.state.user_id)
         return await call_next(request)
 
 
 def setup_middleware(app: FastAPI, logger: Logger = getLogger(__name__)):
     app.add_middleware(CookieAuthMiddleware, token_accessor=store.accessor.token)
     app.add_middleware(ErrorHandlingMiddleware, logger=logger)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://127.0.0.1:8008"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )

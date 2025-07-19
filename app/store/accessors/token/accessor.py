@@ -42,7 +42,7 @@ class TokenAccessor:
         """Генерация Access Token (короткоживущий)."""
         return self.create_token(
             {
-                "sub": user_id,
+                "sub": str(user_id),
                 "type": "access",
             },
             expires_delta=timedelta(minutes=self.settings.access_token_expire_minutes),

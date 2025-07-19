@@ -1,3 +1,4 @@
+from icecream import ic
 from sqladmin import Admin
 from sqladmin.authentication import AuthenticationBackend
 from sqlalchemy.ext.asyncio import create_async_engine
@@ -33,6 +34,7 @@ class AdminAuth(AuthenticationBackend):
 
     async def authenticate(self, request: Request) -> bool:
         if token := request.session.get("token"):
+            ic(1,token)
             return bool(self._store.accessor.token.verify_token(token))
         return False
 
