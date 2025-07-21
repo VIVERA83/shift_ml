@@ -7,15 +7,15 @@ from .schema import SalarySchema, DateSchema
 
 salary_route = APIRouter(prefix="/salary", tags=["SALARY"])
 
-
-@salary_route.post(
-    "",
-    summary="Зарплата",
-    description="Добавить дату повышения зарплаты и новое значение зарплаты.",
-    response_model=SalarySchema,
-)
-async def create_salary(salary_data: SalarySchema):
-    return await store.accessor.salary.create(**salary_data.model_dump())
+# УБРАНО ПРИМЕР ДЛЯ ДОБАВЛЕНИЯ ЗАРПЛАТЫ
+# @salary_route.post(
+#     "",
+#     summary="Зарплата",
+#     description="Добавить дату повышения зарплаты и новое значение зарплаты.",
+#     response_model=SalarySchema,
+# )
+# async def create_salary(salary_data: SalarySchema):
+#     return await store.accessor.salary.create(**salary_data.model_dump())
 
 
 @salary_route.get(

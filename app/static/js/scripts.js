@@ -24,12 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             localStorage.setItem('access_token', data.access_token);
-            await fetch('/dashboard', {
-                headers: {
-                    'Authorization': `Bearer ${data.access_token}`,
-                }
-            });
-            // window.location.href = '/dashboard';
+            window.location.href = '/dashboard';
         } catch (error) {
             alert(error.message || 'Ошибка авторизации');
         }
